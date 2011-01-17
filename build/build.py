@@ -1,10 +1,12 @@
 import sys, os, types, re, fnmatch, subprocess
-from os.path import split, isdir, isfile, exists, splitext
+from os.path import split, isdir, isfile, exists, splitext, abspath, join, \
+                    basename, dirname
 
 import Options, Utils, Logs
 from Configure import conf
 from Build import BuildContext
 from TaskGen import taskgen, feature, after, before
+from Utils import to_list as listify
 
 
 # provide a partial function if we don't have one
@@ -40,13 +42,98 @@ class CPPBuildContext(BuildContext):
         return defines
 
     def pprint(self, *strs, **kw):
-        colors = kw.get('colors', 'blue')
-        if type(colors) == str:
-            colors = colors.split()
+        colors = listify(kw.get('colors', 'blue'))
         colors = map(str.upper, colors)
         for i, s in enumerate(strs):
             sys.stderr.write("%s%s " % (Logs.colors(colors[i % len(colors)]), s))
         sys.stderr.write("%s%s" % (Logs.colors.NORMAL, os.linesep))
+    
+    def fromConfig(self, path, **overrides):
+        bld = self
+        from ConfigParser import SafeConfigParser as Parser
+        cp = Parser()
+        
+        if isdir(path):
+            for f in 'project.cfg module.cfg project.ini module.ini'.split():
+                configFile = join(path, f)
+                if isfile(configFile):
+                    cp.read(configFile)
+                    path = configFile
+                    break
+        elif isfile(path):
+            cp.read(path)
+        
+        sectionDict = lambda x: dict(cp.items(filter(lambda x: cp.has_section(x), [x, x.lower(), x.upper()])[0]))
+        
+        args = sectionDict('module')
+        args.update(overrides)
+        
+        if 'path' not in args:
+            if 'dir' in args:
+                args['path'] = bld.path.find_dir(args.pop('dir'))
+            else:
+                pardir = abspath(dirname(path))
+                curdir = abspath(bld.curdir)
+                if pardir.startswith(curdir):
+                    relDir = './%s' % pardir[len(curdir):].lstrip(os.sep)
+                    args['path'] = bld.path.find_dir(relDir)
+                else:
+                    args['path'] = bld.path
+        
+        #get the env
+        if 'env' in args:
+            env = args['env']
+        else:
+            variant = args.get('variant', bld.env['VARIANT'] or 'default')
+            env = bld.env_of_name(variant)
+            env.set_variant(variant)
+        
+        # do some special processing for the module
+        excludes = args.pop('exclude', None)
+        if excludes is not None:
+            if type(excludes) == str:
+                args['source_filter'] = partial(lambda x, t: basename(t) not in x,
+                                                excludes.split())
+        elif 'source' in args:
+            source = args.pop('source', None)
+            if type(source) == str:
+                args['source_filter'] = partial(lambda x, t: basename(t) in x,
+                                                source.split())
+        
+        # this specifies that we need to check if it is a USELIB or USELIB_LOCAL
+        # if MAKE_%% is defined, then it is local; otherwise, it's a uselib
+        uselibCheck = args.pop('uselib_check', None)
+        if uselibCheck:
+            if ('MAKE_%s' % uselibCheck) in env:
+                args['uselib_local'] = ' '.join([uselibCheck, args.get('uselib_local', '')])
+            else:
+                args['uselib'] = ' '.join([uselibCheck, args.get('uselib', '')])
+        
+        
+        try:
+            testArgs = sectionDict('tests')
+            excludes = testArgs.pop('exclude', None)
+            if excludes is not None:
+                if type(excludes) == str:
+                    args['test_filter'] = partial(lambda x, t: basename(t) not in x,
+                                                excludes.split())
+            elif 'source' in testArgs:
+                source = testArgs.pop('source', None)
+                if type(source) == str:
+                    args['test_filter'] = partial(lambda x, t: basename(t) in x,
+                                                source.split())
+        except Exception:{}
+        self.module(**args)
+        
+        try:
+            progArgs = sectionDict('programs')
+            files = progArgs.pop('files', '')
+            for f in files.split():
+                parts = f.split('|', 2)
+                self.program(module_deps=args['name'], source=parts[0],
+                             path=args['path'],
+                             name=splitext(len(parts) == 2 and parts[1] or parts[0])[0])
+        except Exception:{}
     
     def runUnitTests(self, tests, path):
         path = path or self.path.abspath()
@@ -60,8 +147,7 @@ class CPPBuildContext(BuildContext):
                 isTest = split(x)[1] in tests
             return isTest
         
-        exes = filter(_isTest, map(lambda x: os.path.join(path, x),
-                                  os.listdir(path)))
+        exes = filter(_isTest, map(lambda x: join(path, x), os.listdir(path)))
         
         if exes:
             self.pprint('Running Unit Tests:', path, colors='blue pink')
@@ -113,13 +199,14 @@ class CPPBuildContext(BuildContext):
         path = modArgs.get('path',
                            'dir' in modArgs and bld.path.find_dir(modArgs['dir']) or bld.path)
 
-        module_deps = map(lambda x: '%s-%s' % (x, lang), modArgs.get('module_deps', '').split())
-        defines = self.__getDefines(env) + modArgs.get('defines', '').split()
-        uselib_local = module_deps + modArgs.get('uselib_local', '').split()
-        uselib = modArgs.get('uselib', '').split() + ['CSTD', 'CRUN']
-        includes = modArgs.get('includes', 'include').split()
-        exportIncludes = modArgs.get('export_includes', 'include').split()
+        module_deps = map(lambda x: '%s-%s' % (x, lang), listify(modArgs.get('module_deps', '')))
+        defines = self.__getDefines(env) + listify(modArgs.get('defines', ''))
+        uselib_local = module_deps + listify(modArgs.get('uselib_local', ''))
+        uselib = listify(modArgs.get('uselib', '')) + ['CSTD', 'CRUN']
+        includes = listify(modArgs.get('includes', 'include'))
+        exportIncludes = listify(modArgs.get('export_includes', 'include'))
         libVersion = modArgs.get('version', None)
+        installPath = modArgs.get('install_path', None)
         
         if libVersion is not None and sys.platform != 'win32':
             targetName = '%s.%s' % (libName, self.safeVersion(libVersion))
@@ -133,24 +220,25 @@ class CPPBuildContext(BuildContext):
             lib = bld.new_task_gen(libExeType, env['LIB_TYPE'] or 'staticlib', includes=includes,
                     target=targetName, name=libName, export_incdirs=exportIncludes,
                     uselib_local=uselib_local, uselib=uselib, env=env.copy(),
-                    defines=defines, path=path, install_path='${PREFIX}/lib')
+                    defines=defines, path=path, install_path=installPath or '${PREFIX}/lib')
             lib.find_sources_in_dirs(modArgs.get('source_dir', modArgs.get('sourcedir', 'source')))
             lib.source = filter(modArgs.get('source_filter', None), lib.source)
             
+            pattern = env['%s_PATTERN' % (env['LIB_TYPE'] or 'staticlib')]
             if libVersion is not None and sys.platform != 'win32' and Options.options.symlinks:
-                symlinkLoc = '%s/%s' % (lib.install_path, env['staticlib_PATTERN'] % libName)
+                symlinkLoc = '%s/%s' % (lib.install_path, pattern % libName)
 #                bld.add_group()
-                bld.symlink_as(symlinkLoc, env['staticlib_PATTERN'] % lib.target, env=env)
+                bld.symlink_as(symlinkLoc, pattern % lib.target, env=env)
             
-
-        for f in path.find_dir('include').find_iter():
+        incNode = path.find_dir('include')
+        for f in (incNode and incNode.find_iter() or []):
             relpath = f.relpath_gen(path)
-            bld.install_files('${PREFIX}/%s' % os.path.dirname(relpath),
+            bld.install_files('${PREFIX}/%s' % dirname(relpath),
                               f.abspath())
         
         testNode = path.find_dir('tests')
         if testNode and not Options.options.libs_only:
-            test_deps = modArgs.get('test_deps', modArgs.get('module_deps', '')).split()
+            test_deps = listify(modArgs.get('test_deps', modArgs.get('module_deps', '')))
             
             if not headersOnly:
                 test_deps.append(modArgs['name'])
@@ -169,13 +257,13 @@ class CPPBuildContext(BuildContext):
 
         testNode = path.find_dir('unittests')
         if testNode:
-            test_deps = modArgs.get('module_deps', '').split()
-            test_uselib = modArgs.get('uselib', '').split()
-            #add to the UNITTEST var in other places to define what it means
-            test_uselib.append('UNITTEST')
+            test_deps = listify(modArgs.get('unittest_deps', modArgs.get('module_deps', '')))
+            test_uselib = listify(modArgs.get('unittest_uselib', modArgs.get('uselib', '')))
             
             if not headersOnly:
                 test_deps.append(modArgs['name'])
+            else:
+                test_uselib.append(modArgs['name'])
             
             sourceExt = {'c++':'.cpp', 'c':'.c'}.get(lang, 'cxx')
             tests = []
@@ -184,8 +272,9 @@ class CPPBuildContext(BuildContext):
                                                   maxdepth=1, flat=True).split()):
                 
                 exe = self.unittest(env=env, test=test, module_deps=' '.join(test_deps),
-                             uselib=' '.join(test_uselib),
-                             lang=lang, path=testNode, disabled=True)
+                             uselib = ' '.join(test_uselib),
+                             lang=lang, path=testNode, disabled=True,
+                             includes='.')
                 tests.append(splitext(test)[0])
                 
             # add a post-build hook to run the unit tests
@@ -194,8 +283,6 @@ class CPPBuildContext(BuildContext):
                 bld.add_post_fun(partial(CPPBuildContext.runUnitTests,
                                          tests=tests,
                                          path=self.getBuildDir(testNode)))
-                
-
         return env
     
     
@@ -208,19 +295,21 @@ class CPPBuildContext(BuildContext):
             env = bld.env_of_name(variant)
             env.set_variant(variant)
         
-        test_deps = modArgs.get('module_deps', '').split()
-        test_uselib = modArgs.get('uselib', '').split()
+        test_deps = listify(modArgs.get('module_deps', ''))
+        test_uselib = listify(modArgs.get('uselib', ''))
         #add to the UNITTEST var in other places to define what it means
         test_uselib.append('UNITTEST')
         test = modArgs['test']
         path = modArgs.get('path',
                            'dir' in modArgs and bld.path.find_dir(modArgs['dir']) or bld.path)
+        includes = modArgs.get('includes', 'include')
 
         exe = self.program(env=env, name=splitext(test)[0], source=test,
                      module_deps=' '.join(test_deps),
                      uselib=' '.join(test_uselib),
+                     uselib_local=modArgs.get('uselib_local', ''),
                      lang=modArgs.get('lang', 'c++'), path=path,
-                     install_path=None)
+                     install_path=None, includes=includes)
 
         if 'disabled' not in modArgs:
             # add a post-build hook to run the unit tests
@@ -253,13 +342,13 @@ class CPPBuildContext(BuildContext):
         path = modArgs.get('path',
                            'dir' in modArgs and bld.path.find_dir(modArgs['dir']) or bld.path)
 
-        module_deps = map(lambda x: '%s-%s' % (x, lang), modArgs.get('module_deps', '').split())
-        defines = self.__getDefines(env) + modArgs.get('defines', '').split() + ['PLUGIN_MODULE_EXPORTS']
-        uselib_local = module_deps + modArgs.get('uselib_local', '').split()
-        uselib = modArgs.get('uselib', '').split() + ['CSTD', 'CRUN']
-        includes = modArgs.get('includes', 'include').split()
-        exportIncludes = modArgs.get('export_includes', 'include').split()
-        source = modArgs.get('source', '').split() or None
+        module_deps = map(lambda x: '%s-%s' % (x, lang), listify(modArgs.get('module_deps', '')))
+        defines = self.__getDefines(env) + listify(modArgs.get('defines', '')) + ['PLUGIN_MODULE_EXPORTS']
+        uselib_local = module_deps + listify(modArgs.get('uselib_local', ''))
+        uselib = listify(modArgs.get('uselib', '')) + ['CSTD', 'CRUN']
+        includes = listify(modArgs.get('includes', 'include'))
+        exportIncludes = listify(modArgs.get('export_includes', 'include'))
+        source = listify(modArgs.get('source', '')) or None
         
         lib = bld.new_task_gen(libExeType, 'shlib', includes=includes, source=source,
                 target=libName, name=libName, export_incdirs=exportIncludes,
@@ -296,12 +385,12 @@ class CPPBuildContext(BuildContext):
         path = modArgs.get('path',
                            'dir' in modArgs and bld.path.find_dir(modArgs['dir']) or bld.path)
 
-        module_deps = map(lambda x: '%s-%s' % (x, lang), modArgs.get('module_deps', '').split())
-        defines = self.__getDefines(env) + modArgs.get('defines', '').split()
-        uselib_local = module_deps + modArgs.get('uselib_local', '').split()
-        uselib = modArgs.get('uselib', '').split() + ['CSTD', 'CRUN']
-        includes = modArgs.get('includes', 'include').split()
-        source = modArgs.get('source', '').split() or None
+        module_deps = map(lambda x: '%s-%s' % (x, lang), listify(modArgs.get('module_deps', '')))
+        defines = self.__getDefines(env) + listify(modArgs.get('defines', ''))
+        uselib_local = module_deps + listify(modArgs.get('uselib_local', ''))
+        uselib = listify(modArgs.get('uselib', '')) + ['CSTD', 'CRUN']
+        includes = listify(modArgs.get('includes', 'include'))
+        source = listify(modArgs.get('source', '')) or None
         install_path = modArgs.get('install_path', '${PREFIX}/bin')
         
         exe = bld.new_task_gen(libExeType, 'program', source=source,
@@ -318,13 +407,67 @@ class CPPBuildContext(BuildContext):
         """
         Returns the build dir, relative to where you currently are (bld.path)
         """
-        cwd = path and path.abspath() or self.path.abspath()
+        if type(path) == str:
+            cwd = path
+        else:
+            cwd = path and path.abspath() or self.path.abspath()
         bldDir = self.srcnode.abspath(self.env)
         for i in range(len(cwd)):
             if not bldDir.startswith(cwd[:i]):
-                bldDir = os.path.join(bldDir, cwd[i - 1:])
+                bldDir = join(bldDir, cwd[i - 1:])
                 break
         return bldDir
+
+    def mexify(self, **modArgs):
+        """
+        Utility for compiling a mex file (with mexFunction) to a mex shared lib
+        """
+        bld = self
+        if 'env' in modArgs:
+            env = modArgs['env']
+        else:
+            variant = modArgs.get('variant', bld.env['VARIANT'] or 'default')
+            env = bld.env_of_name(variant)
+            env.set_variant(variant)
+        
+        if env['HAVE_MEX_H']:
+        
+            #override the shlib pattern
+            env = env.copy()
+            if env['shlib_PATTERN'].startswith('lib'):
+                env['shlib_PATTERN'] = env['shlib_PATTERN'][3:]
+            env['shlib_PATTERN'] = splitext(env['shlib_PATTERN'])[0] + env['MEX_EXT']
+        
+            modArgs = dict((k.lower(), v) for k, v in modArgs.iteritems())
+            lang = modArgs.get('lang', 'c++')
+            libExeType = {'c++':'cxx', 'c':'cc'}.get(lang, 'cxx')
+            path = modArgs.get('path',
+                               'dir' in modArgs and bld.path.find_dir(modArgs['dir']) or bld.path)
+
+            module_deps = map(lambda x: '%s-%s' % (x, lang), listify(modArgs.get('module_deps', '')))
+            defines = self.__getDefines(env) + listify(modArgs.get('defines', ''))
+            uselib_local = module_deps + listify(modArgs.get('uselib_local', ''))
+            uselib = listify(modArgs.get('uselib', '')) + ['CSTD', 'CRUN', 'MEX']
+            includes = listify(modArgs.get('includes', 'include'))
+            installPath = modArgs.get('install_path', None)
+            source = modArgs.get('source', None)
+            name = modArgs.get('name', None)
+            targetName = modArgs.get('target', None)
+            
+            if source:
+                name = splitext(split(source)[1])[0]
+            
+            mex = bld.new_task_gen(libExeType, 'shlib', target=targetName or name,
+                                   name=name, uselib_local=uselib_local,
+                                   uselib=uselib, env=env.copy(), defines=defines,
+                                   path=path, source=source, includes=includes,
+                                   install_path=installPath or '${PREFIX}/bin/mex')
+            if not source:
+                mex.find_sources_in_dirs(modArgs.get('source_dir', modArgs.get('sourcedir', 'source')))
+                mex.source = filter(modArgs.get('source_filter', None), mex.source)
+            
+            pattern = env['%s_PATTERN' % (env['LIB_TYPE'] or 'staticlib')]
+    
 
 
 class GlobDirectoryWalker:
@@ -355,7 +498,7 @@ class GlobDirectoryWalker:
                 self.index = 0
             else:
                 # got a filename
-                fullname = os.path.join(self.directory, file)
+                fullname = join(self.directory, file)
                 if isdir(fullname):# and not os.path.islink(fullname):
                     self.stack.append(fullname)
                 for p in self.patterns:
@@ -404,11 +547,11 @@ def unzipper(inFile, outDir):
     dirs.sort()
     
     for d in filter(lambda x: not exists(x),
-                    map(lambda x: os.path.join(outDir, x), dirs)):
+                    map(lambda x: join(outDir, x), dirs)):
         os.mkdir(d)
 
     for i, name in enumerate(filter(lambda x: not x.endswith('/'), zf.namelist())):
-        outFile = open(os.path.join(outDir, name), 'wb')
+        outFile = open(join(outDir, name), 'wb')
         outFile.write(zf.read(name))
         outFile.flush()
         outFile.close()
@@ -642,6 +785,8 @@ def detect(self):
             config['cxx']['verbose']        = '-v'
             config['cxx']['64']             = '-m64'
             config['cxx']['32']             = '-m32'
+            config['cxx']['linkflags_64']   = '-m64'
+            config['cxx']['linkflags_32']   = '-m32'
             config['cxx']['optz_med']       = '-O1'
             config['cxx']['optz_fast']      = '-O2'
             config['cxx']['optz_fastest']   = '-O3'
@@ -659,6 +804,8 @@ def detect(self):
             config['cc']['verbose']        = '-v'
             config['cc']['64']             = '-m64'
             config['cc']['32']             = '-m32'
+            config['cc']['linkflags_64']   = '-m64'
+            config['cc']['linkflags_32']   = '-m32'
             config['cc']['optz_med']       = '-O1'
             config['cc']['optz_fast']      = '-O2'
             config['cc']['optz_fastest']   = '-O3'
@@ -784,8 +931,25 @@ def detect(self):
     #check if the system is 64-bit capable
     if re.match(winRegex, platform):
         is64Bit = Options.options.enable64
-    elif not Options.options.enable32:
-        if '64' in config['cxx']:
+    if not Options.options.enable32:
+        #ifdef _WIN64
+        if re.match(winRegex, platform):
+            frag64 = '''
+#include <stdio.h>
+int main() {
+    #ifdef _WIN64
+    printf("1");
+    #else
+    printf("0");
+    #endif
+    return 0; }
+'''         
+            output = self.check(fragment=frag64,
+                                execute=1, msg='Checking for 64-bit system')
+            try:
+                is64Bit = bool(int(output))
+            except:{}
+        elif '64' in config['cxx']:
             if self.check_cxx(cxxflags=config['cxx']['64'], linkflags=config['cc'].get('linkflags_64', ''), mandatory=False):
                 is64Bit = self.check_cc(cflags=config['cc']['64'], linkflags=config['cc'].get('linkflags_64', ''), mandatory=False)
 
@@ -800,6 +964,7 @@ def detect(self):
         variant.append_value('CCFLAGS', config['cc'].get('32', ''))
         variant.append_value('LINKFLAGS', config['cc'].get('linkflags_32', ''))
     
+    env['IS64BIT'] = is64Bit
     self.set_env_name(variantName, variant)
     variant.set_variant(variantName)
     env.set_variant(variantName)
@@ -838,8 +1003,8 @@ def m4subst(tsk):
     m4_re = re.compile('@(\w+)@', re.M)
 
     env = tsk.env
-    infile = os.path.join(tsk.path.abspath(), tsk.input)
-    outfile = os.path.join(tsk.path.abspath(), tsk.output)
+    infile = join(tsk.path.abspath(), tsk.input)
+    outfile = join(tsk.path.abspath(), tsk.output)
     
     file = open(infile, 'r')
     code = file.read()
@@ -867,8 +1032,8 @@ def m4subst(tsk):
 def commentUndefs(tsk):
     import re
     env = tsk.env
-    infile = os.path.join(tsk.path.abspath(), tsk.input)
-    outfile = os.path.join(tsk.path.abspath(), tsk.output)
+    infile = join(tsk.path.abspath(), tsk.input)
+    outfile = join(tsk.path.abspath(), tsk.output)
     
     file = open(infile, 'r')
     code = file.read()
@@ -884,7 +1049,7 @@ def commentUndefs(tsk):
 @taskgen
 @feature('makeHeader')
 def makeHeader(tsk):
-    outfile = os.path.join(tsk.path.abspath(), tsk.output)
+    outfile = join(tsk.path.abspath(), tsk.output)
     dest = open(outfile, 'w')
     guard = '__CONFIG_H__'
     dest.write('#ifndef %s\n#define %s\n\n' % (guard, guard))

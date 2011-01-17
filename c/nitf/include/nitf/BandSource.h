@@ -23,9 +23,7 @@
 #ifndef __NITF_BAND_SOURCE_H__
 #define __NITF_BAND_SOURCE_H__
 
-#include "nitf/Error.h"
 #include "nitf/System.h"
-#include "nitf/IOHandle.h"
 #include "nitf/DataSource.h"
 
 NITF_CXX_GUARD
@@ -100,6 +98,12 @@ NITFAPI(nitf_BandSource *) nitf_MemorySource_construct(char *data,
  *         out how many actual bytes to skip)
  */
 NITFAPI(nitf_BandSource *) nitf_FileSource_construct(nitf_IOHandle handle,
+        nitf_Off start,
+        int numBytesPerPixel,
+        int pixelSkip,
+        nitf_Error * error);
+
+NITFAPI(nitf_BandSource *) nitf_IOSource_construct(nitf_IOInterface *io,
         nitf_Off start,
         int numBytesPerPixel,
         int pixelSkip,

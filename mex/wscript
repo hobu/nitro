@@ -1,0 +1,7 @@
+configure = distclean = lambda x: None
+
+def set_options(opt):
+    opt.sub_options('nitf')
+    
+def build(bld):
+    bld.add_subdirs('nitf')
