@@ -37,13 +37,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY})
 # Output directory in which to build ARCHIVE target files.
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY}) 
 
-
-set(NITF_C_LIB_NAME "nitf-c")
-set(NITF_CPP_LIB_NAME "nitf-cpp")
-add_subdirectory(c)
-add_subdirectory(c++)
-
-
 set(DEFAULT_BIN_SUBDIR bin)
 set(DEFAULT_LIB_SUBDIR lib)
 set(DEFAULT_INCLUDE_SUBDIR include )
@@ -55,6 +48,15 @@ set(NITRO_INCLUDE_SUBDIR ${DEFAULT_INCLUDE_SUBDIR} CACHE STRING
   "Subdirectory where header files will be installed")
 set(NITRO_DATA_SUBDIR ${DEFAULT_DATA_SUBDIR} CACHE STRING
   "Subdirectory where data will be installed")
+
+
+set(NITF_C_LIB_NAME "nitf-c")
+set(NITF_CPP_LIB_NAME "nitf-cpp")
+add_subdirectory(c)
+add_subdirectory(c++)
+
+
+
 
 
 install(DIRECTORY "./c/nitf/include/"
