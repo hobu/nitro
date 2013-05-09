@@ -46,8 +46,8 @@ set(NITRO_LIB_SUBDIR ${DEFAULT_LIB_SUBDIR} CACHE STRING
   "Subdirectory where libraries will be installed")
 set(NITRO_INCLUDE_SUBDIR ${DEFAULT_INCLUDE_SUBDIR} CACHE STRING
   "Subdirectory where header files will be installed")
-set(NITRO_DATA_SUBDIR ${DEFAULT_DATA_SUBDIR} CACHE STRING
-  "Subdirectory where data will be installed")
+set(NITRO_PKG_SUBDIR pkgconfig CACHE STRING
+  "Subdirectory where pkgconfig will be installed")
 
 
 set(NITF_C_LIB_NAME "nitf-c")
@@ -102,3 +102,18 @@ FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
 install(DIRECTORY "./c++/sys/include/"
 DESTINATION ${NITRO_INCLUDE_SUBDIR}/nitro/c++
 FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+
+set(PKGCFG_PREFIX "${CMAKE_INSTALL_PREFIX}")
+set(PKGCFG_INC_DIR "${NITRO_INCLUDE_SUBDIR}")
+set(PKGCFG_LIB_DIR "${NITRO_LIB_SUBDIR}")
+set(PKGCFG_REQUIRES  "")
+set(PKGCFG_VERSION ${VERSION})
+set(PKGCFG_LINK_FLAGS "-lnitf-cpp -lnitf-c")
+set(PKGCFG_COMPILE_FLAGS "")
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libnitf.pc.in
+  ${CMAKE_CURRENT_BINARY_DIR}/libnitf.pc @ONLY)
+  
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnitf.pc
+  DESTINATION ${NITRO_PKG_SUBDIR}
+  PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)

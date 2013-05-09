@@ -1,0 +1,12 @@
+prefix=@PKGCFG_PREFIX@
+exec_prefix=@PKGCFG_PREFIX@
+libdir=@PKGCFG_LIB_DIR@
+includedir=@PKGCFG_INC_DIR@
+
+Name: Nitro
+Description: C/C++ library for National Imagery Transmission Format (NITF)
+Requires: @PKGCFG_REQUIRES@
+Version: @PKGCFG_VERSION@
+Libs: -L${libdir} @PKGCFG_LINK_FLAGS@
+Cflags: -I${includedir}/nitro @PKGCFG_COMPILE_FLAGS@
+
