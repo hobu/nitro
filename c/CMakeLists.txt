@@ -3,7 +3,7 @@ include_directories(nrt/include)
 include_directories(nitf/include)
 
 add_sources(nrt/source/*.c)
-add_sources(nitf/source/*.c)
+#add_sources(nitf/source/*.c)
 
 add_library(${NITF_C_LIB_NAME} SHARED ${SRC})
 

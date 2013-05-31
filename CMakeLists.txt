@@ -49,6 +49,85 @@ set(NITRO_INCLUDE_SUBDIR ${DEFAULT_INCLUDE_SUBDIR} CACHE STRING
 set(NITRO_PKG_SUBDIR pkgconfig CACHE STRING
   "Subdirectory where pkgconfig will be installed")
 
+if(WIN32)
+  if(MSVC)
+    option(PDAL_USE_STATIC_RUNTIME "Use the static runtime" OFF)
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MT")
+
+    # Note that the CMake cache will still show /MD
+    # http://www.cmake.org/Wiki/CMake_FAQ#Dynamic_Replace
+    foreach(flag_var
+      CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+      CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+      if(${flag_var} MATCHES "/MD")
+        string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+      endif(${flag_var} MATCHES "/MD")
+    endforeach(flag_var)
+  endif(MSVC)
+endif(WIN32)
+
+# note we default to debug mode
+if(NOT MSVC_IDE)
+  if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING 
+    "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
+  endif()
+  message(STATUS "Setting PDAL build type - ${CMAKE_BUILD_TYPE}")
+endif()
+
+set(PDAL_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+
+# TODO: Still testing the output paths --mloskot
+set(PDAL_BUILD_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+
+# Output directory in which to build RUNTIME target files.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PDAL_BUILD_OUTPUT_DIRECTORY})
+
+# Output directory in which to build LIBRARY target files
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PDAL_BUILD_OUTPUT_DIRECTORY})
+
+# Output directory in which to build ARCHIVE target files.
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PDAL_BUILD_OUTPUT_DIRECTORY}) 
+
+
+#------------------------------------------------------------------------------
+# Platform and compiler specific settings
+#------------------------------------------------------------------------------
+
+if(WIN32)
+  if (MSVC)
+    if (MSVC80 OR MSVC90 OR MSVC10 OR MSVC11)
+      add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
+      add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+      add_definitions(-D_CRT_NONSTDC_NO_WARNING)
+      add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+      add_definitions(-DNITF_MODULE_EXPORTS)
+      add_definitions(-DSIZEOF_SIZE_T=4)
+      add_definitions(-DWIN32)
+    endif()
+    
+    if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+      string(REGEX REPLACE "/W[0-4]" "/W4"
+        CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    else()
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    endif()
+
+    if(MSVC90 OR MSVC10 OR MSVC11)
+      if (NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} LESS 2.8.6)
+        include(ProcessorCount)
+        ProcessorCount(N)
+        if(NOT N EQUAL 0)
+          set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   /MP${N}")
+  	      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${N}")
+        endif()
+      endif()
+    endif()
+
+  endif(MSVC)
+
+endif()
 
 set(NITF_C_LIB_NAME "nitf-c")
 set(NITF_CPP_LIB_NAME "nitf-cpp")

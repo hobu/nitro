@@ -10,7 +10,10 @@ include_directories(${PROJECT_SOURCE_DIR}/c++/mt/include)
 include_directories(${PROJECT_SOURCE_DIR}/c++/str/include)
 include_directories(${PROJECT_SOURCE_DIR}/c++/sys/include)
 
-add_definitions("-D__POSIX -D_REENTRANT")
+add_definitions("-D_REENTRANT")
+if (NOT WIN32)
+add_definitions("-D__POSIX")
+endif()
 
 add_sources(nitf/source/*.cpp)
 add_sources(except/source/*.cpp)
