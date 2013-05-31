@@ -405,17 +405,17 @@ NITFAPI(nitf_BandSource *) nitf_FileSource_construct(nitf_IOHandle handle,
         &IOSource_setSize
     };
 
-    nitf_IOInterface *interface = NULL;
+    nitf_IOInterface *iface = NULL;
     nitf_BandSource* bandSource = NULL;
 
-    interface = nitf_IOHandleAdapter_construct(handle, NRT_ACCESS_READONLY,
+    iface = nitf_IOHandleAdapter_construct(handle, NRT_ACCESS_READONLY,
                                                error);
-    if (interface == NULL)
+    if (iface == NULL)
     {
         return NULL;
     }
 
-    bandSource = nitf_IOSource_construct(interface, start, numBytesPerPixel,
+    bandSource = nitf_IOSource_construct(iface, start, numBytesPerPixel,
                                          pixelSkip, error);
     if (bandSource == NULL)
     {
@@ -443,17 +443,17 @@ NITFAPI(nitf_BandSource *) nitf_FileSource_constructFile(const char* fname,
         &IOSource_setSize
     };
 
-    nitf_IOInterface* interface = NULL;
+    nitf_IOInterface* iface = NULL;
     nitf_BandSource* bandSource = NULL;
 
-    interface = nitf_IOHandleAdapter_open(fname, NRT_ACCESS_READONLY,
+    iface = nitf_IOHandleAdapter_open(fname, NRT_ACCESS_READONLY,
                                           NRT_OPEN_EXISTING, error);
-    if (interface == NULL)
+    if (iface == NULL)
     {
         return NULL;
     }
 
-    bandSource = nitf_IOSource_construct(interface, start, numBytesPerPixel,
+    bandSource = nitf_IOSource_construct(iface, start, numBytesPerPixel,
                                          pixelSkip, error);
     if (bandSource == NULL)
     {

@@ -53,7 +53,7 @@ if(WIN32)
   if(MSVC)
     option(PDAL_USE_STATIC_RUNTIME "Use the static runtime" OFF)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MT")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MT")
 
     # Note that the CMake cache will still show /MD
     # http://www.cmake.org/Wiki/CMake_FAQ#Dynamic_Replace
@@ -105,6 +105,10 @@ if(WIN32)
       add_definitions(-DNITF_MODULE_EXPORTS)
       add_definitions(-DSIZEOF_SIZE_T=4)
       add_definitions(-DWIN32)
+      add_definitions(-DNOMINMAX)
+      add_definitions(/wd4290)
+      add_definitions(/GR)
+      add_definitions(/EHs)
     endif()
     
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
