@@ -29,6 +29,10 @@ add_library(${NITF_CPP_LIB_NAME} SHARED ${SRC})
 
 target_link_libraries(${NITF_CPP_LIB_NAME} ${NITF_C_LIB_NAME} )
 
+if (WIN32)
+  target_link_libraries(${NITF_CPP_LIB_NAME} ws2_32)
+endif()
+
 install(TARGETS ${NITF_CPP_LIB_NAME}
     RUNTIME DESTINATION ${NITRO_BIN_SUBDIR}
     LIBRARY DESTINATION ${NITRO_LIB_SUBDIR}
