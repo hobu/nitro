@@ -29,10 +29,10 @@ nitf_IOInterface* MemoryIO::create(void* buffer,
                                    bool adopt) throw(nitf::NITFException)
 {
     nitf_Error error;
-    nitf_IOInterface* const interface = nitf_BufferAdapter_construct(
+    nitf_IOInterface* const iface = nitf_BufferAdapter_construct(
             static_cast<char*>(buffer), size, adopt, &error);
 
-    if (!interface)
+    if (!iface)
     {
         if (adopt)
         {
@@ -42,7 +42,7 @@ nitf_IOInterface* MemoryIO::create(void* buffer,
         throw nitf::NITFException(&error);
     }
 
-    return interface;
+    return iface;
 }
 
 MemoryIO::MemoryIO(size_t capacity) throw(nitf::NITFException) :

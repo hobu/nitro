@@ -7326,7 +7326,7 @@ int nitf_ImageIO_cachedReader(_nitf_ImageIOBlock * blockIO,
             else
             {
                 /* Decompression interface structure */
-                nitf_DecompressionInterface *interface;
+                nitf_DecompressionInterface *iface;
                 
                 /* No plugin */
                 if (nitf->decompressor == NULL)
@@ -7337,13 +7337,13 @@ int nitf_ImageIO_cachedReader(_nitf_ImageIOBlock * blockIO,
                     return NITF_FAILURE;
                 }
                 
-                interface = nitf->decompressor;
+                iface = nitf->decompressor;
                 if (nitf->blockControl.block != NULL)
-                    (*(interface->freeBlock)) (nitf->decompressionControl,
+                    (*(iface->freeBlock)) (nitf->decompressionControl,
                                                nitf->blockControl.block,
                                                error);
                 nitf->blockControl.block =
-                    (*(interface->readBlock)) (nitf->decompressionControl,
+                    (*(iface->readBlock)) (nitf->decompressionControl,
                                                blockIO->number, error);
                 if (nitf->blockControl.block == NULL)
                     return NITF_FAILURE;
