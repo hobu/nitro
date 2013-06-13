@@ -40,12 +40,14 @@
 # if defined(WIN32)
 #   include "sys/Conf.h"
 #   define DLL_PUBLIC_FUNCTION extern "C" __declspec (dllexport)
+#   define DLL_PUBLIC_CLASS __declspec (dllexport)
 typedef HINSTANCE DYNAMIC_LIBRARY;
 typedef FARPROC DLL_FUNCTION_PTR;
 # else
 #   include <dlfcn.h>
 #   define DLL_FLAGSET RTLD_LAZY
 #   define DLL_PUBLIC_FUNCTION extern "C"
+#   define DLL_PUBLIC_CLASS 
 typedef void* DYNAMIC_LIBRARY;
 typedef void* DLL_FUNCTION_PTR;
 # endif

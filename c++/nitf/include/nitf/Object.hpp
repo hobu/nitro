@@ -23,6 +23,7 @@
 #ifndef __NITF_OBJECT_HPP__
 #define __NITF_OBJECT_HPP__
 
+#include "sys/DLL.h"
 #include "nitf/Handle.hpp"
 #include "nitf/HandleManager.hpp"
 #include "nitf/NITFException.hpp"
@@ -40,7 +41,7 @@ class HashTable;
  * C core.
  */
 template <typename T, typename DestructFunctor_T = MemoryDestructor<T> >
-class Object
+class DLL_PUBLIC_CLASS Object
 {
 protected:
     //make the nitf containers friends
@@ -177,14 +178,14 @@ public:
  */
 
 #define DECLARE_CLASS_IN(_Name, _Package) \
-    struct _Name##Destructor : public nitf::MemoryDestructor<_Package##_##_Name> \
+    struct  _Name##Destructor : public nitf::MemoryDestructor<_Package##_##_Name> \
   { \
       ~_Name##Destructor(){} \
       virtual void operator()(_Package##_##_Name *nativeObject) \
       { _Package##_##_Name##_destruct(&nativeObject); } \
   }; \
   \
-  class _Name : public nitf::Object<_Package##_##_Name, _Name##Destructor>
+  class DLL_PUBLIC_CLASS _Name : public nitf::Object<_Package##_##_Name, _Name##Destructor>
 
 #define DECLARE_CLASS(_Name) DECLARE_CLASS_IN(_Name, nitf)
 
