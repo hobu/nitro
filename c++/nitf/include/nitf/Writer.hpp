@@ -42,7 +42,7 @@
 namespace nitf
 {
 
-struct WriterDestructor : public nitf::MemoryDestructor<nitf_Writer>
+struct DLL_PUBLIC_CLASS WriterDestructor : public nitf::MemoryDestructor<nitf_Writer>
 {
     ~WriterDestructor()
     {
@@ -54,7 +54,7 @@ struct WriterDestructor : public nitf::MemoryDestructor<nitf_Writer>
  *  \class Writer
  *  \brief  The C++ wrapper for the nitf_Writer
  */
-class Writer : public nitf::Object<nitf_Writer, WriterDestructor>
+class DLL_PUBLIC_CLASS Writer : public nitf::Object<nitf_Writer, WriterDestructor>
 {
 public:
     //! Copy constructor

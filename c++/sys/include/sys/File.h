@@ -26,6 +26,7 @@
 #include "sys/Conf.h"
 #include "sys/SystemException.h"
 #include "sys/Path.h"
+#include "sys/Export.h"
 
 #ifdef WIN32
 #    define _SYS_SEEK_CUR FILE_CURRENT
@@ -67,7 +68,7 @@ typedef int _SYS_HANDLE_TYPE;
 
 namespace sys
 {
-class File
+class DLL_PUBLIC_CLASS File
 {
 public:
 

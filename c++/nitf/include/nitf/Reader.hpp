@@ -40,7 +40,7 @@
 namespace nitf
 {
 
-struct ReaderDestructor : public nitf::MemoryDestructor<nitf_Reader>
+struct DLL_PUBLIC_CLASS ReaderDestructor : public nitf::MemoryDestructor<nitf_Reader>
 {
     ~ReaderDestructor()
     {
@@ -52,7 +52,7 @@ struct ReaderDestructor : public nitf::MemoryDestructor<nitf_Reader>
  *  \class Reader
  *  \brief  The C++ wrapper for the nitf_Reader
  */
-class Reader : public nitf::Object<nitf_Reader, ReaderDestructor>
+class DLL_PUBLIC_CLASS Reader : public nitf::Object<nitf_Reader, ReaderDestructor>
 {
 public:
     //! Copy constructor

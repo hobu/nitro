@@ -24,6 +24,7 @@
 #define __SYS_PATH_H__
 
 #include "sys/OS.h"
+#include "sys/Export.h"
 #include <import/str.h>
 #include <string>
 #include <deque>
@@ -38,7 +39,7 @@
 namespace sys
 {
 
-class Path
+class DLL_PUBLIC_CLASS Path
 {
 public:
     Path();

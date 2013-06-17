@@ -39,7 +39,7 @@ namespace nitf
  *  \brief  The C++ wrapper for the nitf_DateTime object
  *  Note that, unlike most of the C++ bindings, this is a deep copy
  */
-class DateTime
+class DLL_PUBLIC_CLASS DateTime
 {
 public:
     //! Sets to current date/time

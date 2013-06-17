@@ -31,7 +31,7 @@
 
 namespace sys
 {
-class MutexWin32 : public MutexInterface
+class DLL_PUBLIC_CLASS MutexWin32 : public MutexInterface
 {
 public:
     //! \todo Add string name option

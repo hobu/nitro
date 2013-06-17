@@ -42,7 +42,7 @@ namespace nitf
  *  \class ImageWriter
  *  \brief  The C++ wrapper for the nitf_ImageWriter
  */
-class ImageWriter : public WriteHandler
+class DLL_PUBLIC_CLASS ImageWriter : public WriteHandler
 {
 public:
     /*!

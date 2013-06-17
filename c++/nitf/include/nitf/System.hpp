@@ -30,6 +30,7 @@
 #include "nitf/System.h"
 #include "nitf/Field.h"
 #include "nitf/Types.h"
+#include "sys/Export.h"
 
 namespace nitf
 {

@@ -26,6 +26,8 @@
 #include <list>
 #include <sstream>
 #include "except/Context.h"
+#include "sys/Export.h"
+
 
 /*!
  * \file Trace.h
@@ -39,7 +41,7 @@ namespace except
  * \class Trace
  * \brief Holds stack of context information
  */
-class Trace
+class DLL_PUBLIC_CLASS Trace
 {
 public:
     /*!
@@ -107,6 +109,6 @@ private:
 };
 }
 
-std::ostream& operator<<(std::ostream& os, const except::Trace& t);
+DLL_PUBLIC_FUNCTION std::ostream& operator<<(std::ostream& os, const except::Trace& t);
 
 #endif

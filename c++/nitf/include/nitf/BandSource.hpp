@@ -52,7 +52,7 @@ typedef DataSource BandSource;
  *  times during the case of memory mapping, although it may be used
  *  to sample down or cut the image into pieces).
  */
-class MemorySource : public BandSource
+class DLL_PUBLIC_CLASS MemorySource : public BandSource
 {
 public:
     /*!
@@ -77,7 +77,7 @@ public:
  *  we allow the creator to specify a start point, and a pixel skip
  *  (this would help you create a thumbnail as well).
  */
-class FileSource : public BandSource
+class DLL_PUBLIC_CLASS FileSource : public BandSource
 {
 public:
     FileSource(const std::string& fname,
@@ -107,7 +107,7 @@ struct RowSourceCallback
     virtual void nextRow(nitf::Uint32 band, char* buf) throw (nitf::NITFException) = 0;
 };
 
-class RowSource : public BandSource
+class DLL_PUBLIC_CLASS RowSource : public BandSource
 {
 public:
     RowSource(nitf::Uint32 band, nitf::Uint32 numRows, nitf::Uint32 numCols,

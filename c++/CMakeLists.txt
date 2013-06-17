@@ -13,6 +13,13 @@ include_directories(${PROJECT_SOURCE_DIR}/c++/sys/include)
 add_definitions("-D_REENTRANT")
 if (NOT WIN32)
 add_definitions("-D__POSIX")
+else()
+
+endif()
+
+if (WIN32)
+      add_definitions("-DNRT_MODULE_EXPORTS=1")
+      add_definitions("-DNITF_MODULE_EXPORTS=1")
 endif()
 
 add_sources(nitf/source/*.cpp)

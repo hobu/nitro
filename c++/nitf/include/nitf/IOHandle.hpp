@@ -41,7 +41,7 @@ namespace nitf
  *  \class IOHandle
  *  \brief The C++ wrapper of the nitf_IOHandle
  */
-class IOHandle : public IOInterface
+class DLL_PUBLIC_CLASS IOHandle : public IOInterface
 {
 
 public:

@@ -40,7 +40,7 @@ namespace nitf
  *  \class SegmentWriter
  *  \brief  The C++ wrapper for the nitf_SegmentWriter
  */
-class SegmentWriter : public WriteHandler
+class DLL_PUBLIC_CLASS SegmentWriter : public WriteHandler
 {
 public:
     SegmentWriter() throw (nitf::NITFException);

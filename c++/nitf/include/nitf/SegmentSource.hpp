@@ -55,7 +55,7 @@ typedef DataSource SegmentSource;
  *  times during the case of memory mapping, although it may be used
  *  to sample down or cut the data into pieces).
  */
-class SegmentMemorySource : public SegmentSource
+class DLL_PUBLIC_CLASS SegmentMemorySource : public SegmentSource
 {
 public:
     /*!
@@ -79,7 +79,7 @@ public:
  *  file descriptor or handle.  Due to any number of constraints,
  *  we allow the creator to specify a start point, and a byte skip.
  */
-class SegmentFileSource : public SegmentSource
+class DLL_PUBLIC_CLASS SegmentFileSource : public SegmentSource
 {
 public:
     /*!
@@ -96,7 +96,7 @@ public:
     }
 };
 
-class SegmentReaderSource : public SegmentSource
+class DLL_PUBLIC_CLASS SegmentReaderSource : public SegmentSource
 {
 public:
     /*!

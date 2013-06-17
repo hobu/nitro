@@ -89,7 +89,7 @@ private:
  *
  *  Iterates a linked list.
  */
-class ListIterator
+class DLL_PUBLIC_CLASS ListIterator
 {
 public:
     //! Constructor

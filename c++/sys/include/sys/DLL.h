@@ -37,20 +37,18 @@
  *
  */
 
-# if defined(WIN32)
+
+#include "sys/Export.h"
+
+#ifdef WIN32
 #   include "sys/Conf.h"
-#   define DLL_PUBLIC_FUNCTION extern "C" __declspec (dllexport)
-#   define DLL_PUBLIC_CLASS __declspec (dllexport)
 typedef HINSTANCE DYNAMIC_LIBRARY;
 typedef FARPROC DLL_FUNCTION_PTR;
-# else
+#else
 #   include <dlfcn.h>
-#   define DLL_FLAGSET RTLD_LAZY
-#   define DLL_PUBLIC_FUNCTION extern "C"
-#   define DLL_PUBLIC_CLASS 
 typedef void* DYNAMIC_LIBRARY;
 typedef void* DLL_FUNCTION_PTR;
-# endif
+#endif
 
 #include "except/Exception.h"
 #include "sys/Err.h"

@@ -26,6 +26,7 @@
 
 #include <string>
 #include <time.h>
+#include "sys/Export.h"
 
 namespace sys
 {
@@ -33,7 +34,7 @@ namespace sys
 /*!
  *  Representation of a date/time structure.
  */
-class DateTime
+class DLL_PUBLIC_CLASS DateTime
 {
 protected:
     int mYear;

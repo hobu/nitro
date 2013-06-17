@@ -30,6 +30,7 @@
 #include "nitf/HashTable.hpp"
 #include "nitf/List.hpp"
 #include "nitf/DateTime.hpp"
+#include "sys/DLL.h"
 #include <import/str.h>
 #include <string>
 
@@ -47,7 +48,7 @@ namespace nitf
  *  The Field is a generic type object that allows storage
  *  and casting of data amongst disparate data types.
  */
-class Field : public nitf::Object<nitf_Field>
+class DLL_PUBLIC_CLASS Field : public nitf::Object<nitf_Field>
 {
 
 public:

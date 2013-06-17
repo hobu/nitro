@@ -27,6 +27,7 @@
 #include <sstream>
 #include "except/Trace.h"
 
+
 /*!
  * \file Throwable.h
  * \brief Contains the classes to do with error handling
@@ -43,7 +44,7 @@ namespace except
  *
  * This class provides the base interface for exceptions and errors.
  */
-class Throwable
+class DLL_PUBLIC_CLASS Throwable
 {
 public:
 

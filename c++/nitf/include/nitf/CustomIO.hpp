@@ -27,7 +27,7 @@
 
 namespace nitf
 {
-class CustomIO : public IOInterface
+class DLL_PUBLIC_CLASS CustomIO : public IOInterface
 {
 public:
     CustomIO();

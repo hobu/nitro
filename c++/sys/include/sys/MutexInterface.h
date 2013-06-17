@@ -30,6 +30,7 @@
 #include <typeinfo>
 #include "sys/SystemException.h"
 #include "sys/Dbg.h"
+#include "sys/Export.h"
 
 namespace sys
 {
@@ -41,7 +42,7 @@ namespace sys
  *  This class defines the interface for any mutex in any package that
  *  is wrapped herein
  */
-class MutexInterface
+class DLL_PUBLIC_CLASS MutexInterface
 {
 public:
     //!  Constructor

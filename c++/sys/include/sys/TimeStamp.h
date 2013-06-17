@@ -29,6 +29,7 @@
 #include "sys/Conf.h"
 #include "sys/LocalDateTime.h"
 #include "sys/UTCDateTime.h"
+#include "sys/Export.h"
 
 /*!
  *  \file  TimeStamp.h
@@ -44,7 +45,7 @@ namespace sys
  *  \brief Class for timestamping
  *
  */
-class TimeStamp
+class DLL_PUBLIC_CLASS TimeStamp
 {
 public:
     //! The maximum length of a timestamp

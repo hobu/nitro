@@ -39,7 +39,7 @@ namespace nitf
  *  \class Handle
  *  \brief  This class is the base definition of a Handle
  */
-class Handle
+class DLL_PUBLIC_CLASS Handle
 {
 public:
     Handle() : refCount(0) {}
@@ -79,7 +79,7 @@ protected:
  *          in handles. Extend this class to custom-destruct objects.
  */
 template <typename T>
-struct MemoryDestructor
+struct DLL_PUBLIC_CLASS MemoryDestructor
 {
     virtual void operator()(T* /*nativeObject*/) {}
     virtual ~MemoryDestructor() {}
@@ -93,7 +93,7 @@ struct MemoryDestructor
  *  and decRef functions.
  */
 template <typename Class_T, typename DestructFunctor_T = MemoryDestructor<Class_T> >
-class BoundHandle : public Handle
+class DLL_PUBLIC_CLASS BoundHandle : public Handle
 {
 private:
     Class_T* handle;

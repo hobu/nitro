@@ -39,7 +39,7 @@ namespace nitf
  *  \class MemoryIO
  *  \brief The C++ wrapper of the nitf_BufferAdapter
  */
-class MemoryIO : public IOInterface
+class DLL_PUBLIC_CLASS MemoryIO : public IOInterface
 {
 public:
     MemoryIO(size_t capacity) throw(nitf::NITFException);

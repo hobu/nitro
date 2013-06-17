@@ -24,6 +24,7 @@
 #ifndef __EXCEPT_CONTEXT_H__
 #define __EXCEPT_CONTEXT_H__
 
+#include "sys/Export.h"
 #include <string>
 #include <iostream>
 
@@ -42,7 +43,7 @@ namespace except
  * This class contains information such as the file, line, 
  * function and time
  */
-class Context
+class DLL_PUBLIC_CLASS Context
 {
 public:
 

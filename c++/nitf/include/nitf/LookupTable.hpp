@@ -40,7 +40,7 @@ namespace nitf
  *  \class LookupTable
  *  \brief  The C++ wrapper for the nitf_LookupTable
  */
-class LookupTable : public nitf::Object<nitf_LookupTable>
+class DLL_PUBLIC_CLASS LookupTable : public nitf::Object<nitf_LookupTable>
 {
 public:
     //! Create an uninitialized table of the specified dimensions

@@ -39,12 +39,12 @@
 
 namespace nitf
 {
-class HashTable; //forward declaration
+class DLL_PUBLIC_CLASS HashTable; //forward declaration
 
 /*!
  * HashTable Iterator Functor
  */
-class HashIterator
+class DLL_PUBLIC_CLASS HashIterator
 {
 public:
     virtual ~HashIterator(){}
@@ -60,7 +60,7 @@ public:
  *
  *  Iterates a hash table, unordered.
  */
-class HashTableIterator
+class DLL_PUBLIC_CLASS HashTableIterator
 {
 public:
     //! Constructor

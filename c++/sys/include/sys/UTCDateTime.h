@@ -24,6 +24,7 @@
 #define __SYS_UTC_DATE_TIME_H__
 
 #include <sys/DateTime.h>
+#include "sys/Export.h"
 
 namespace sys
 {
@@ -31,7 +32,7 @@ namespace sys
 /*!
  *  Representation of a UTC date/time structure.
  */
-class UTCDateTime : public DateTime
+class DLL_PUBLIC_CLASS UTCDateTime : public DateTime
 {
 protected:
     /**

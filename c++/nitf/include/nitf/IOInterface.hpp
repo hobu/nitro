@@ -33,7 +33,7 @@
 namespace nitf
 {
 
-struct IOInterfaceDestructor : public nitf::MemoryDestructor<nitf_IOInterface>
+struct DLL_PUBLIC_CLASS IOInterfaceDestructor : public nitf::MemoryDestructor<nitf_IOInterface>
 {
     ~IOInterfaceDestructor()
     {
@@ -45,7 +45,7 @@ struct IOInterfaceDestructor : public nitf::MemoryDestructor<nitf_IOInterface>
  *  \class IOInterface
  *  \brief  The C++ wrapper for the nitf_IOInterface
  */
-class IOInterface : public nitf::Object<nitf_IOInterface, IOInterfaceDestructor>
+class DLL_PUBLIC_CLASS IOInterface : public nitf::Object<nitf_IOInterface, IOInterfaceDestructor>
 {
 public:
     // Set native object

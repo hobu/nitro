@@ -31,8 +31,8 @@
 namespace nitf
 {
 // Forward declarations so we can say we are friends
-class List;
-class HashTable;
+class DLL_PUBLIC_CLASS List;
+class DLL_PUBLIC_CLASS HashTable;
 /*!
  * \class Object
  * \brief  This class keeps a pointer to an underlying C object
@@ -178,7 +178,7 @@ public:
  */
 
 #define DECLARE_CLASS_IN(_Name, _Package) \
-    struct  _Name##Destructor : public nitf::MemoryDestructor<_Package##_##_Name> \
+    struct DLL_PUBLIC_CLASS _Name##Destructor : public nitf::MemoryDestructor<_Package##_##_Name> \
   { \
       ~_Name##Destructor(){} \
       virtual void operator()(_Package##_##_Name *nativeObject) \

@@ -26,10 +26,11 @@
 #include <sys/File.h>
 #include <mem/ScopedArray.h>
 #include <nitf/CustomIO.hpp>
+#include <sys/Export.h>
 
 namespace nitf
 {
-class BufferedWriter : public CustomIO
+class DLL_PUBLIC_CLASS BufferedWriter : public CustomIO
 {
 public:
     BufferedWriter(const std::string& file, size_t bufferSize);
