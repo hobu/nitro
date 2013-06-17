@@ -109,6 +109,6 @@ private:
 };
 }
 
-DLL_PUBLIC_FUNCTION std::ostream& operator<<(std::ostream& os, const except::Trace& t);
+DLL_PUBLIC_CLASS std::ostream& operator<<(std::ostream& os, const except::Trace& t);
 
 #endif
