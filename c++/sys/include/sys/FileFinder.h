@@ -25,6 +25,7 @@
 
 #include <functional>
 #include <vector>
+#include <string>
 
 namespace sys
 {
