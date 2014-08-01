@@ -22,6 +22,7 @@
 
 #ifdef WIN32
 
+#include <algorithm>
 #include <limits>
 #include <cmath>
 #include "sys/File.h"
