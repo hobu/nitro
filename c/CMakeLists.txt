@@ -9,6 +9,7 @@ endif()
 
 add_sources(nrt/source/*.c)
 add_sources(nitf/source/*.c)
+add_sources(nitf/shared/*.c)
 
 add_library(${NITF_C_LIB_NAME} SHARED ${SRC})
 
