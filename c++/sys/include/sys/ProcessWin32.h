@@ -26,8 +26,8 @@
 
 #if defined(WIN32)
 
-#include "sys/ProcessInterface.h"
-#include "sys/Thread.h"
+#include "ProcessInterface.h"
+#include "Thread.h"
 
 namespace sys
 {

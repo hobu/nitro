@@ -29,7 +29,7 @@
 
 #include <thread.h>
 #include <synch.h>
-#include "sys/ThreadInterface.h"
+#include "ThreadInterface.h"
 
 namespace sys
 {

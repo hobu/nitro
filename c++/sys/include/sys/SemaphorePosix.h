@@ -25,7 +25,7 @@
 #define __SYS_SEMAPHORE_POSIX_H__
 #if defined(__POSIX) && defined(_REENTRANT) && !defined(__APPLE_CC__)
 
-#include "sys/SemaphoreInterface.h"
+#include "SemaphoreInterface.h"
 
 #if defined(__APPLE_CC_H__)
 #  include <sys/semaphore.h>

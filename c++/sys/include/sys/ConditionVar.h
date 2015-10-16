@@ -27,7 +27,7 @@
 #  if defined(_REENTRANT)
 
 #    if defined(USE_NSPR_THREADS)
-#        include "sys/ConditionVarNSPR.h"
+#        include "ConditionVarNSPR.h"
 namespace sys
 {
 typedef ConditionVarNSPR ConditionVar;

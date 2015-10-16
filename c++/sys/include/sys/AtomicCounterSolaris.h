@@ -25,7 +25,7 @@
 
 #include <atomic.h>
 
-#include <sys/Conf.h>
+#include "Conf.h"
 
 namespace sys
 {

@@ -23,7 +23,7 @@
 #ifndef __SYS_ATOMIC_COUNTER_MUTEX_H__
 #define __SYS_ATOMIC_COUNTER_MUTEX_H__
 
-#include <sys/Mutex.h>
+#include "Mutex.h"
 
 namespace sys
 {

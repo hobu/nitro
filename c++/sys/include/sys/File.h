@@ -23,10 +23,10 @@
 #ifndef __SYS_FILE_H__
 #define __SYS_FILE_H__
 
-#include "sys/Conf.h"
-#include "sys/SystemException.h"
-#include "sys/Path.h"
-#include "sys/Export.h"
+#include "Conf.h"
+#include "SystemException.h"
+#include "Path.h"
+#include "Export.h"
 
 #ifdef WIN32
 #    define _SYS_SEEK_CUR FILE_CURRENT

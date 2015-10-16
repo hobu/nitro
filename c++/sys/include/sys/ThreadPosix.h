@@ -28,7 +28,7 @@
 
 #include <sched.h>
 #include <pthread.h>
-#include "sys/ThreadInterface.h"
+#include "ThreadInterface.h"
 
 
 /*!

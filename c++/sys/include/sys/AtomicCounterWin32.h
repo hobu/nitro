@@ -24,7 +24,7 @@
 #define __SYS_ATOMIC_COUNTER_WIN32_H__
 
 // In order to include windows.h with the appropriate stuff defined beforehand
-#include <sys/Conf.h>
+#include "Conf.h"
 
 namespace sys
 {

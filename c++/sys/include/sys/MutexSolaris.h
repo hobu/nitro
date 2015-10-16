@@ -29,7 +29,7 @@
 
 #include <thread.h>
 #include <synch.h>
-#include "sys/MutexInterface.h"
+#include "MutexInterface.h"
 
 namespace sys
 {

@@ -27,8 +27,8 @@
 #if defined(__sgi) && defined(_REENTRANT) && !defined(__POSIX)
 
 #include <ulocks.h>
-#include "sys/SyncFactoryIrix.h"
-#include "sys/SemaphoreInterface.h"
+#include "SyncFactoryIrix.h"
+#include "SemaphoreInterface.h"
 
 namespace sys
 {

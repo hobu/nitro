@@ -36,8 +36,8 @@
  *
  */
 
-#include "sys/Dbg.h"
-#include "sys/Runnable.h"
+#include "Dbg.h"
+#include "Runnable.h"
 #include <vector>
 
 namespace sys

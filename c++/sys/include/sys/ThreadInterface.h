@@ -24,12 +24,12 @@
 #ifndef __SYS_THREAD_INTERFACE_H__
 #define __SYS_THREAD_INTERFACE_H__
 
-#include "sys/Runnable.h"
+#include "Runnable.h"
 
 #if defined(_REENTRANT)
 #include <typeinfo>
 #include <iostream>
-#include "sys/SystemException.h"
+#include "SystemException.h"
 
 
 namespace sys

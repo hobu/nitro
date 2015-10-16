@@ -28,9 +28,9 @@
 
 #if defined(_REENTRANT) && !defined(__APPLE_CC__)
 
-#include "sys/Dbg.h"
-#include "sys/Mutex.h"
-#include "sys/Semaphore.h"
+#include "Dbg.h"
+#include "Mutex.h"
+#include "Semaphore.h"
 
 namespace sys
 {

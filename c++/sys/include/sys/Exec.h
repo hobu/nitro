@@ -27,9 +27,9 @@
 #include <import/except.h>
 #include <str/Convert.h>
 
-#include "sys/Runnable.h"
-#include "sys/Err.h"
-#include "sys/ProcessInterface.h"
+#include "Runnable.h"
+#include "Err.h"
+#include "ProcessInterface.h"
 
 #ifdef _WIN32
 #define popen _popen

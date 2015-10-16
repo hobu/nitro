@@ -27,10 +27,10 @@
 #if defined(__sgi) && defined(_REENTRANT) && !defined(__POSIX)
 
 #include <vector>
-#include "sys/SyncFactoryIrix.h"
-#include "sys/ConditionVarInterface.h"
-#include "sys/MutexIrix.h"
 
+#include "SyncFactoryIrix.h"
+#include "ConditionVarInterface.h"
+#include "MutexIrix.h"
 
 namespace sys
 {

@@ -26,8 +26,9 @@
 
 #  if defined(USE_NSPR_THREADS)
 
-#include "sys/ConditionVarInterface.h"
-#include "sys/MutexNSPR.h"
+#include "ConditionVarInterface.h"
+#include "MutexNSPR.h"
+
 #include <prlock.h>
 #include <prcvar.h>
 #include <prthread.h>

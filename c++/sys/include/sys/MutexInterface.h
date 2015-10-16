@@ -28,9 +28,10 @@
 
 #if defined(_REENTRANT)
 #include <typeinfo>
-#include "sys/SystemException.h"
-#include "sys/Dbg.h"
-#include "sys/Export.h"
+
+#include "SystemException.h"
+#include "Dbg.h"
+#include "Export.h"
 
 namespace sys
 {

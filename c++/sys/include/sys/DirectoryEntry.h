@@ -25,9 +25,9 @@
 #define __SYS_DIRECTORY_ENTRY_H__
 
 #include "except/Exception.h"
-#include "sys/OS.h"
-#include "sys/Path.h"
 
+#include "OS.h"
+#include "Path.h"
 
 namespace sys
 {

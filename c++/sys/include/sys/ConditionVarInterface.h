@@ -25,9 +25,12 @@
 #define __SYS_CONDITION_VAR_INTERFACE_H__
 
 #if defined(_REENTRANT)
+
 #include <typeinfo>
-#include "sys/SystemException.h"
-#include "sys/Mutex.h"
+
+#include "SystemException.h"
+#include "Mutex.h"
+
 namespace sys
 {
 /*!

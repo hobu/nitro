@@ -26,7 +26,9 @@
 
 #  if defined(__sgi) && defined(_REENTRANT) && !defined(__POSIX)
 #include <iostream>
-#include "sys/Dbg.h"
+
+#include "Dbg.h"
+
 #include <memory>
 #include <unistd.h>
 #include <signal.h>

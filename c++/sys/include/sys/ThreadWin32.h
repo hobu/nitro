@@ -28,8 +28,8 @@
 
 #if !defined(USE_NSPR_THREADS) && !defined(__POSIX)
 
-#include "sys/ThreadInterface.h"
-#include "sys/Conf.h"
+#include "ThreadInterface.h"
+#include "Conf.h"
 #include <sstream>
 
 

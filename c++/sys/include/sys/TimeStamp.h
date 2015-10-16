@@ -26,10 +26,10 @@
 
 #include <string>
 #include "str/Format.h"
-#include "sys/Conf.h"
-#include "sys/LocalDateTime.h"
-#include "sys/UTCDateTime.h"
-#include "sys/Export.h"
+#include "Conf.h"
+#include "LocalDateTime.h"
+#include "UTCDateTime.h"
+#include "Export.h"
 
 /*!
  *  \file  TimeStamp.h

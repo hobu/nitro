@@ -24,17 +24,17 @@
 #ifndef __SYS_OS_H__
 #define __SYS_OS_H__
 
-#include "sys/AbstractOS.h"
+#include "AbstractOS.h"
 
 #if defined(WIN32)
-#  include "sys/OSWin32.h"
+#  include "OSWin32.h"
 namespace sys
 {
 typedef OSWin32 OS;
 typedef DirectoryWin32 Directory;
 }
 #else
-#  include "sys/OSUnix.h"
+#  include "OSUnix.h"
 namespace sys
 {
 typedef OSUnix OS;

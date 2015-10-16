@@ -26,8 +26,9 @@
 
 #if !defined(WIN32)
 
-#include "sys/AbstractOS.h"
-#include "sys/Conf.h"
+#include "AbstractOS.h"
+#include "Conf.h"
+
 #include <dirent.h>
 #include <sys/utsname.h>
 

@@ -43,8 +43,9 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
-#include "sys/Conf.h"
-#include "sys/ProcessInterface.h"
+
+#include "Conf.h"
+#include "ProcessInterface.h"
 
 
 namespace sys
