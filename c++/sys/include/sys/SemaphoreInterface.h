@@ -26,7 +26,8 @@
 
 #  if defined(_REENTRANT)
 #include <typeinfo>
-#include "sys/SystemException.h"
+
+#include "SystemException.h"
 
 namespace sys
 {

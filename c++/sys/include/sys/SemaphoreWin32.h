@@ -28,8 +28,8 @@
 
 #if !defined(USE_NSPR_THREADS) && !defined(__POSIX)
 
-#include "sys/Conf.h"
-#include "sys/SemaphoreInterface.h"
+#include "Conf.h"
+#include "SemaphoreInterface.h"
 
 namespace sys
 {

@@ -24,7 +24,7 @@
 #ifndef __SYSTEM_EXCEPTION_H__
 #define __SYSTEM_EXCEPTION_H__
 
-#include "sys/Err.h"
+#include "Err.h"
 #include "except/Error.h"
 #include "except/Exception.h"
 

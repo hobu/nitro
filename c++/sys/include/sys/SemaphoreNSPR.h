@@ -28,7 +28,7 @@
 
 #include "except/Exception.h"
 
-#include "sys/SemaphoreInterface.h"
+#include "SemaphoreInterface.h"
 #include <semaphore.h>
 
 namespace sys

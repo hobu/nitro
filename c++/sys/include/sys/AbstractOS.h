@@ -25,9 +25,9 @@
 
 #include <vector>
 #include <string>
-#include "sys/Conf.h"
-#include "sys/FileFinder.h"
-#include "sys/SystemException.h"
+#include "Conf.h"
+#include "FileFinder.h"
+#include "SystemException.h"
 #include "str/Tokenizer.h"
 
 /*!

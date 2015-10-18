@@ -23,8 +23,9 @@
 #ifndef __SYS_PATH_H__
 #define __SYS_PATH_H__
 
-#include "sys/OS.h"
-#include "sys/Export.h"
+#include "OS.h"
+#include "Export.h"
+
 #include <import/str.h>
 #include <string>
 #include <deque>

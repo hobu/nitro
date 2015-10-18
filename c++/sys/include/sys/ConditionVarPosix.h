@@ -26,8 +26,9 @@
 
 #if defined(__POSIX) && defined(_REENTRANT)
 
-#include "sys/MutexPosix.h"
-#include "sys/ConditionVarInterface.h"
+#include "MutexPosix.h"
+#include "ConditionVarInterface.h"
+
 #include <pthread.h>
 
 namespace sys

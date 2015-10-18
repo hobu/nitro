@@ -36,17 +36,17 @@
  *
  */
 
-#include "sys/ProcessInterface.h"
+#include "ProcessInterface.h"
 
 #if defined(WIN32)
-#  include "sys/ProcessWin32.h"
+#  include "ProcessWin32.h"
 namespace sys
 {
 typedef ProcessWin32 Process;
 }
 #
 #else
-#  include "sys/ProcessUnix.h"
+#  include "ProcessUnix.h"
 namespace sys
 {
 typedef ProcessUnix Process;

@@ -26,7 +26,7 @@
 
 #if defined(USE_NSPR_THREADS) && defined(_REENTRANT)
 
-#include "sys/MutexInterface.h"
+#include "MutexInterface.h"
 #include <prlock.h>
 #include <prcvar.h>
 #include <prthread.h>

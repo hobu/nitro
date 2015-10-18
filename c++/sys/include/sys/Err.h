@@ -35,7 +35,8 @@
  *  to obtain the error
  */
 
-#include "sys/Conf.h"
+#include "Conf.h"
+
 #include <string.h>
 
 namespace sys

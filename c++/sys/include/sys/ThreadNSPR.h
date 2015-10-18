@@ -25,7 +25,7 @@
 #define __SYS_THREAD_NSPR_THREAD_H__
 
 #  if defined(USE_NSPR_THREADS)
-#include "sys/ThreadInterface.h"
+#include "ThreadInterface.h"
 #include <prlock.h>
 #include <prcvar.h>
 #include <prthread.h>

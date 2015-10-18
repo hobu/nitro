@@ -27,8 +27,10 @@
 #if defined(__sun) && defined(_REENTRANT) && !defined(__POSIX)
 #include <thread.h>
 #include <synch.h>
-#include "sys/ConditionVarInterface.h"
-#include "sys/MutexSolaris.h"
+
+#include "ConditionVarInterface.h"
+#include "MutexSolaris.h"
+
 namespace sys
 {
 /*!

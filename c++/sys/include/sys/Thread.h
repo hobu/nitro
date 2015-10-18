@@ -38,39 +38,39 @@
 
 // Netscape portable runtime
 #    if defined(USE_NSPR_THREADS)
-#        include "sys/ThreadNSPR.h"
+#        include "ThreadNSPR.h"
 namespace sys
 {
 typedef ThreadNSPR Thread;
 }
 // If they explicitly want posix
 #    elif defined(__POSIX)
-#        include "sys/ThreadPosix.h"
+#        include "ThreadPosix.h"
 namespace sys
 {
 typedef ThreadPosix Thread;
 }
 #    elif defined(WIN32)
-#        include "sys/ThreadWin32.h"
+#        include "ThreadWin32.h"
 namespace sys
 {
 typedef ThreadWin32 Thread;
 }
 #    elif defined(__sun) && !defined(__POSIX)
-#        include "sys/ThreadSolaris.h"
+#        include "ThreadSolaris.h"
 namespace sys
 {
 typedef ThreadSolaris Thread;
 }
 #    elif defined(__sgi) && !defined(__POSIX)
-#        include "sys/ThreadIrix.h"
+#        include "ThreadIrix.h"
 namespace sys
 {
 typedef ThreadIrix Thread;
 }
 // If they havent defined anything and its !windows, we'll give 'em posix
 #    else
-#        include "sys/ThreadPosix.h"
+#        include "ThreadPosix.h"
 namespace sys
 {
 typedef ThreadPosix Thread;

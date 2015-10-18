@@ -26,8 +26,9 @@
 
 
 #if defined(__sgi) && defined(_REENTRANT) && !defined(__POSIX)
-#include "sys/SyncFactoryIrix.h"
-#include "sys/MutexInterface.h"
+
+#include "SyncFactoryIrix.h"
+#include "MutexInterface.h"
 
 namespace sys
 {

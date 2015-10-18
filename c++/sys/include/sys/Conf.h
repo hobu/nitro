@@ -42,10 +42,10 @@
 
 #include <memory>
 #include "str/Format.h"
-#include "sys/TimeStamp.h"
+#include "TimeStamp.h"
 
 #ifdef HAVE_CONFIG_H
-#  include "sys/config.h"
+#  include <sys/config.h>
 #endif
 
 /*  Dance around the compiler to figure out  */

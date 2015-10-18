@@ -27,9 +27,8 @@
 #if defined(WIN32) && defined(_REENTRANT)
 #if !defined(USE_NSPR_THREADS) && !defined(__POSIX)
 
-#include "sys/ConditionVarInterface.h"
-#include "sys/MutexWin32.h"
-
+#include "ConditionVarInterface.h"
+#include "MutexWin32.h"
 
 namespace sys
 {

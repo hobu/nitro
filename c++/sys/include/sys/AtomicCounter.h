@@ -37,7 +37,7 @@
 #include <sys/AtomicCounterSolaris.h>
 #else
 // Bummer - need to fall back on a slow mutex implementation
-#include <sys/AtomicCounterMutex.h>
+#include "AtomicCounterMutex.h"
 #endif
 
 namespace sys
