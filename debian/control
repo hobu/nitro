@@ -1,0 +1,15 @@
+Source: nitro
+Section: devel
+Priority: optional
+Maintainer: Howard Butler <howard@hobu.co>
+Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 9), cmake
+
+Homepage: https://github.com/hobu/nitro
+Package: nitro
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Nitro NITF library
+ This package was designed for use in PDAL's (http://pdal.io) continuous
+ integration (https://launchpad.net/~pdal/+archive/ubuntu/travis) and so may be incomplete
+ and/or incorrect.
