@@ -59,11 +59,11 @@ public:
     ImageSubheader(nitf_ImageSubheader * x);
 
     //! Constructor
-    ImageSubheader() throw(nitf::NITFException);
+    ImageSubheader();
 
 
     //! Clone
-    nitf::ImageSubheader clone() throw(nitf::NITFException);
+    nitf::ImageSubheader clone();
 
     /*!
      *  Destructor
@@ -86,8 +86,7 @@ public:
                              nitf::Uint32 abpp,
                              std::string justification,
                              std::string irep, std::string icat,
-                             std::vector<nitf::BandInfo>& bands)
-        throw(nitf::NITFException);
+                             std::vector<nitf::BandInfo>& bands);
 
 
     /*!
@@ -100,8 +99,7 @@ public:
                              std::string justification,
                              std::string irep, std::string icat,
                              nitf::Uint32 bandCount,
-                             std::vector<nitf::BandInfo>& bands)
-        throw(nitf::NITFException);
+                             std::vector<nitf::BandInfo>& bands);
 
 
     /*!
@@ -124,8 +122,7 @@ public:
      *  following in line with 2500C.
      */
     void setCornersFromLatLons(nitf::CornersType type,
-                               double corners[4][2])
-        throw(nitf::NITFException);
+                               double corners[4][2]);
 
 
     /*!
@@ -143,14 +140,14 @@ public:
      *
      *  following in line with 2500C.
      */
-    void getCornersAsLatLons(double corners[4][2]) throw(nitf::NITFException);
+    void getCornersAsLatLons(double corners[4][2]);
 
     /*!
      *  Get the type of corners.  This will return NITF_CORNERS_UNKNOWN
      *  in the event that it is not 'U', 'N', 'S', 'D', or 'G'.
      *
      */
-    nitf::CornersType getCornersType() throw(nitf::NITFException);
+    nitf::CornersType getCornersType();
 
     /*!
      * Set the image dimensions and blocking info.
@@ -170,7 +167,7 @@ public:
                      nitf::Uint32 numCols,
                      nitf::Uint32 numRowsPerBlock,
                      nitf::Uint32 numColsPerBlock,
-                     const std::string& imode) throw(nitf::NITFException);
+                     const std::string& imode);
 
     /*!
      * Compute blocking parameters
@@ -213,15 +210,14 @@ public:
      * \param numRows           The number of rows
      * \param numCols           The number of columns
      */
-    void setDimensions(nitf::Uint32 numRows, nitf::Uint32 numCols)
-        throw(nitf::NITFException);
+    void setDimensions(nitf::Uint32 numRows, nitf::Uint32 numCols);
 
 
     //! Get the number of bands
-    nitf::Uint32 getBandCount() throw(nitf::NITFException);
+    nitf::Uint32 getBandCount();
 
     //! Create new bands
-    void createBands(nitf::Uint32 numBands) throw(nitf::NITFException);
+    void createBands(nitf::Uint32 numBands);
 
     //! Insert the given comment at the given index (zero-indexed);
     int insertImageComment(std::string comment, int index);
@@ -305,7 +301,7 @@ public:
     nitf::Field getNumMultispectralImageBands();
 
     //! Get the bandInfo
-    nitf::BandInfo getBandInfo(nitf::Uint32 band) throw(nitf::NITFException);
+    nitf::BandInfo getBandInfo(nitf::Uint32 band);
 
     //! Get the imageSyncCode
     nitf::Field getImageSyncCode();

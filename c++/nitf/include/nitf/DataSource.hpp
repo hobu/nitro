@@ -83,7 +83,7 @@ public:
      *  \param buf  The buffer
      *  \param size  The size of the buffer
      */
-    void read(char * buf, nitf::Off size) throw (nitf::NITFException);
+    void read(char * buf, nitf::Off size);
 
     /*
      * Returns the size of the DataSource, in bytes

@@ -64,7 +64,7 @@ public:
      *  \param pixelSkip  The amount of pixels to skip
      */
     MemorySource(char * data, size_t size, nitf::Off start,
-            int numBytesPerPixel, int pixelSkip) throw (nitf::NITFException);
+            int numBytesPerPixel, int pixelSkip);
 };
 
 /*!
@@ -83,7 +83,7 @@ public:
     FileSource(const std::string& fname,
                nitf::Off start,
                int numBytesPerPixel,
-               int pixelSkip) throw (nitf::NITFException);
+               int pixelSkip);
     
     /*!
      *  Constructor
@@ -95,7 +95,7 @@ public:
     FileSource(nitf::IOHandle& io,
                nitf::Off start,
                int numBytesPerPixel,
-               int pixelSkip) throw (nitf::NITFException);
+               int pixelSkip);
 };
 
 struct RowSourceCallback
@@ -104,15 +104,14 @@ struct RowSourceCallback
     {
     }
 
-    virtual void nextRow(nitf::Uint32 band, char* buf) throw (nitf::NITFException) = 0;
+    virtual void nextRow(nitf::Uint32 band, char* buf) = 0;
 };
 
 class DLL_PUBLIC_CLASS RowSource : public BandSource
 {
 public:
     RowSource(nitf::Uint32 band, nitf::Uint32 numRows, nitf::Uint32 numCols,
-            nitf::Uint32 pixelSize, RowSourceCallback *callback)
-            throw (nitf::NITFException);
+            nitf::Uint32 pixelSize, RowSourceCallback *callback);
 
 private:
     static
