@@ -44,12 +44,12 @@ ImageReader::ImageReader(nitf_ImageReader * x)
 
 ImageReader::~ImageReader(){}
 
-nitf::BlockingInfo ImageReader::getBlockingInfo() throw (nitf::NITFException)
+nitf::BlockingInfo ImageReader::getBlockingInfo()
 {
     return nitf::BlockingInfo(nitf_ImageReader_getBlockingInfo(getNativeOrThrow(), &error));
 }
 
-void ImageReader::read(nitf::SubWindow & subWindow, nitf::Uint8 ** user, int * padded) throw (nitf::NITFException)
+void ImageReader::read(nitf::SubWindow & subWindow, nitf::Uint8 ** user, int * padded)
 {
     NITF_BOOL x = nitf_ImageReader_read(getNativeOrThrow(), subWindow.getNative(), user, padded, &error);
     if (!x)

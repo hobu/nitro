@@ -43,15 +43,15 @@ class DLL_PUBLIC_CLASS DateTime
 {
 public:
     //! Sets to current date/time
-    DateTime() throw(nitf::NITFException);
+    DateTime();
 
     //! Set native object - takes ownership
-    DateTime(nitf_DateTime* dateTime) throw(nitf::NITFException);
+    DateTime(nitf_DateTime* dateTime);
 
-    DateTime(double timeInMillis) throw(nitf::NITFException);
+    DateTime(double timeInMillis);
 
     DateTime(const std::string& dateString,
-             const std::string& dateFormat) throw(nitf::NITFException);
+             const std::string& dateFormat);
 
     ~DateTime();
 
@@ -103,13 +103,12 @@ public:
 
     void format(const std::string& format,
                 char* outBuf,
-                size_t maxSize) const throw(nitf::NITFException);
+                size_t maxSize) const;
 
     void format(const std::string& format,
-                std::string &str) const throw(nitf::NITFException);
+                std::string &str) const;
 
-    std::string format(const std::string& format) const
-        throw(nitf::NITFException);
+    std::string format(const std::string& format) const;
 
     int getYear() const;
     int getMonth() const;

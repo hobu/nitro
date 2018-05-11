@@ -55,7 +55,7 @@ public:
     ~ImageReader();
 
     //! Get the blocking info
-    nitf::BlockingInfo getBlockingInfo() throw (nitf::NITFException);
+    nitf::BlockingInfo getBlockingInfo();
 
     /*!
      *  Read a sub-window.  See ImageIO::read for more details.
@@ -63,15 +63,14 @@ public:
      *  \param  user  User-defined data buffers for read
      *  \param  padded  Returns TRUE if pad pixels may have been read
      */
-    void read(nitf::SubWindow & subWindow, nitf::Uint8 ** user, int * padded)
-        throw (nitf::NITFException);
+    void read(nitf::SubWindow & subWindow, nitf::Uint8 ** user, int * padded);
 
     //!  Set read caching
     void setReadCaching();
 
 private:
     nitf_Error error;
-    ImageReader() throw(nitf::NITFException){}
+    ImageReader() {}
 };
 
 }

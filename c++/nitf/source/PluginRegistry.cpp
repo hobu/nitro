@@ -22,14 +22,14 @@
 
 #include "nitf/PluginRegistry.hpp"
 
-void nitf::PluginRegistry::loadDir(const std::string& dirName) throw(nitf::NITFException)
+void nitf::PluginRegistry::loadDir(const std::string& dirName)
 {
     nitf_Error error;
     if (!nitf_PluginRegistry_loadDir(dirName.c_str(), &error))
         throw nitf::NITFException(&error);
 }
 
-void nitf::PluginRegistry::loadPlugin(const std::string& path) throw(nitf::NITFException)
+void nitf::PluginRegistry::loadPlugin(const std::string& path)
 {
     nitf_Error error;
     if (!nitf_PluginRegistry_loadPlugin(path.c_str(), &error))
@@ -38,7 +38,6 @@ void nitf::PluginRegistry::loadPlugin(const std::string& path) throw(nitf::NITFE
 
 void nitf::PluginRegistry::registerTREHandler(NITF_PLUGIN_INIT_FUNCTION init,
         NITF_PLUGIN_TRE_HANDLER_FUNCTION handler)
-        throw(nitf::NITFException)
 {
     nitf_Error error;
     if (!nitf_PluginRegistry_registerTREHandler(init, handler, &error))
