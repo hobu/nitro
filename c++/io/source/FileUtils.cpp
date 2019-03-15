@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2009, General Dynamics - Advanced Information Systems
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,7 +24,7 @@
 #include "io/FileOutputStream.h"
 
 std::string io::FileUtils::createFile(std::string dirname,
-        std::string filename, bool overwrite) throw (except::IOException)
+        std::string filename, bool overwrite)
 {
     sys::OS os;
 
@@ -70,7 +70,7 @@ std::string io::FileUtils::createFile(std::string dirname,
     return outFilename;
 }
 
-void io::FileUtils::touchFile(std::string filename) throw (except::IOException)
+void io::FileUtils::touchFile(std::string filename)
 {
     sys::OS os;
     if (os.exists(filename))
@@ -87,7 +87,7 @@ void io::FileUtils::touchFile(std::string filename) throw (except::IOException)
     }
 }
 
-void io::FileUtils::forceMkdir(std::string dirname) throw (except::IOException)
+void io::FileUtils::forceMkdir(std::string dirname)
 {
     sys::OS os;
     if (os.exists(dirname))
