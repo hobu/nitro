@@ -27,7 +27,6 @@
 #include <memory>
 #include "sys/Runnable.h"
 #include "sys/Thread.h"
-#include "mem/SharedPtr.h"
 #include "except/Error.h"
 
 namespace mt
@@ -65,7 +64,7 @@ public:
     *  Creates and starts a thread from a sys::Runnable.
     *  \param runnable auto_ptr to sys::Runnable
     */
-    void createThread(std::auto_ptr<sys::Runnable> runnable);
+    void createThread(std::unique_ptr<sys::Runnable> runnable);
     
     /*!
     *  Waits for all threads to complete.
@@ -73,7 +72,7 @@ public:
     void joinAll();
 
 private:
-    std::vector<mem::SharedPtr<sys::Thread> > mThreads;
+    std::vector<std::shared_ptr<sys::Thread> > mThreads;
     size_t mLastJoined;
 };
 }

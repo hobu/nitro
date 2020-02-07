@@ -62,15 +62,15 @@
 /******************************************************************************/
 /* DEBUG                                                                      */
 /******************************************************************************/
+#include "nrt/Debug.h"
 #ifdef NITF_DEBUG
     #define NRT_DEBUG 1
-    #include "nrt/Debug.h"
-
-    #define NITF_MEM_LOG        NRT_MEM_LOG
-    #define nitf_Debug_malloc   nrt_Debug_malloc
-    #define nitf_Debug_realloc  nrt_Debug_realloc
-    #define nitf_Debug_free     nrt_Debug_free
 #endif
+
+#define NITF_MEM_LOG        NRT_MEM_LOG
+#define nitf_Debug_malloc   nrt_Debug_malloc
+#define nitf_Debug_realloc  nrt_Debug_realloc
+#define nitf_Debug_free     nrt_Debug_free
 #define nitf_Debug_flogf    nrt_Debug_flogf
 
 /******************************************************************************/
