@@ -124,30 +124,15 @@ bool sys::OSUnix::changeDirectory(const std::string& path) const
 std::string sys::OSUnix::getTempName(const std::string& path, 
                                      const std::string& prefix) const
 {
-    std::string name;
-#if defined(_USE_MKSTEMP) || defined(__linux__) || defined(__linux) || defined(linux__)
     char fullPath[PATH_MAX + 1];
+
     strcpy(fullPath, path.c_str());
     strcat(fullPath, "/");
     strcat(fullPath, prefix.c_str());
     strcat(fullPath, "XXXXXX");
-    int ret = mkstemp(fullPath);
-    if (ret == -1) name = "";
-    else
-    {
-        name = fullPath;
-    }
-#else
-    char *tempname = tempnam(path.c_str(), prefix.c_str());
-    if (tempname == NULL)
-        name = "";
-    else
-    {
-        name = tempname;
-        free(tempname);
-    }
-#endif
-    return name;
+    if (mkstemp(fullPath) != -1)
+        return fullPath;
+    return std::string();
 }
 
 sys::Off_T sys::OSUnix::getSize(const std::string& path) const

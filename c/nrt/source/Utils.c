@@ -307,7 +307,7 @@ NRTAPI(void) nrt_Utils_decimalToGeographic(double decimal, int *degrees,
 NRTAPI(double) nrt_Utils_geographicToDecimal(int degrees, int minutes,
                                              double seconds)
 {
-    double decimal = fabs(degrees);
+    double decimal = abs(degrees);
     decimal += ((double) minutes / 60.0);
     decimal += (seconds / 3600.0);
 

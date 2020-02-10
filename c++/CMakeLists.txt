@@ -35,6 +35,8 @@ add_sources(sys/source/*.cpp)
 add_library(${NITF_CPP_LIB_NAME} SHARED ${SRC})
 
 target_link_libraries(${NITF_CPP_LIB_NAME} ${NITF_C_LIB_NAME} )
+set_property(TARGET ${NITF_CPP_LIB_NAME} PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${NITF_CPP_LIB_NAME} PROPERTY CXX_STANDARD_REQUIRED TRUE)
 
 if (WIN32)
   target_link_libraries(${NITF_CPP_LIB_NAME} ws2_32)

@@ -50,7 +50,6 @@ set(NITRO_PKG_SUBDIR pkgconfig CACHE STRING
   "Subdirectory where pkgconfig will be installed")
 
 
-
 # note we default to debug mode
 if(NOT MSVC_IDE)
   if(NOT CMAKE_BUILD_TYPE)
@@ -110,19 +109,16 @@ if(WIN32)
         endif()
       endif()
     endif()
-
   endif(MSVC)
-
 endif()
+
+cmake_policy(SET CMP0042 NEW) # osx rpath
+set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/${NITRO_LIB_SUBDIR})
 
 set(NITF_C_LIB_NAME "nitf-c")
 set(NITF_CPP_LIB_NAME "nitf-cpp")
 add_subdirectory(c)
 add_subdirectory(c++)
-
-
-
-
 
 install(DIRECTORY "./c/nitf/include/"
   DESTINATION ${NITRO_INCLUDE_SUBDIR}/nitro/c

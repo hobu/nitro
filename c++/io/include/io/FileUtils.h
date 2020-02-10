@@ -43,9 +43,7 @@ public:
      */
     static std::string createFile(std::string dirname, std::string filename =
             std::string(""), bool overwrite = true);
-
     static void touchFile(std::string filename);
-
     static void forceMkdir(std::string dirname);
 
 private:

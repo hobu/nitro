@@ -94,8 +94,7 @@ void io::FileUtils::forceMkdir(std::string dirname)
     {
         if (!os.isDirectory(dirname))
             throw except::IOException(
-                                      Ctxt(
-                                           "Cannot create directory - file already exists"));
+                Ctxt("Cannot create directory - file already exists"));
     }
     else
     {
