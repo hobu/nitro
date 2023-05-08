@@ -1,27 +1,28 @@
 
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 3.5)
 
 project(Nitro)
 
 set(CMAKE_COLOR_MAKEFILE ON)
 
-macro (add_sources)
-    
-    file(GLOB_RECURSE FILES ${ARGN})
+set(CMAKE_C_STANDARD 90)
+set(C_STANDARD_REQUIRED true)
+set(CMAKE_CXX_STANDARD 17)
+set(CXX_STANDARD_REQUIRED true)
+
+macro (add_sources _varlist )
+
+    file(GLOB_RECURSE FILES ${ARGN} )
     file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
     foreach (_src ${FILES})
-        list (APPEND SRC "${_src}")
+        list (APPEND ${_varlist} "${_src}")
     endforeach()
     if (_relPath)
         # propagate SRCS to parent directory
-        set (SRC ${SRC} PARENT_SCOPE)
+        set (${ARGV1} ${ARGV1} PARENT_SCOPE)
     endif()
 endmacro()
 
-if(NOT CMAKE_BUILD_TYPE)
-set(CMAKE_BUILD_TYPE Release CACHE STRING 
-  "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
-endif()
 message(STATUS "Setting Nitro build type - ${CMAKE_BUILD_TYPE}")
 
 
@@ -35,7 +36,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY})
 
 # Output directory in which to build ARCHIVE target files.
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY}) 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY})
 
 set(DEFAULT_BIN_SUBDIR bin)
 set(DEFAULT_LIB_SUBDIR lib)
@@ -53,25 +54,25 @@ set(NITRO_PKG_SUBDIR pkgconfig CACHE STRING
 # note we default to debug mode
 if(NOT MSVC_IDE)
   if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING 
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel" FORCE)
   endif()
-  message(STATUS "Setting PDAL build type - ${CMAKE_BUILD_TYPE}")
+  message(STATUS "Setting Nitro build type - ${CMAKE_BUILD_TYPE}")
 endif()
 
-set(PDAL_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+set(NITRO_BUILD_TYPE ${CMAKE_BUILD_TYPE})
 
 # TODO: Still testing the output paths --mloskot
-set(PDAL_BUILD_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(NITRO_BUILD_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Output directory in which to build RUNTIME target files.
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PDAL_BUILD_OUTPUT_DIRECTORY})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY})
 
 # Output directory in which to build LIBRARY target files
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PDAL_BUILD_OUTPUT_DIRECTORY})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY})
 
 # Output directory in which to build ARCHIVE target files.
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PDAL_BUILD_OUTPUT_DIRECTORY}) 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${NITRO_BUILD_OUTPUT_DIRECTORY})
 
 
 #------------------------------------------------------------------------------
@@ -91,7 +92,7 @@ if(WIN32)
     add_definitions(/wd4290)
     add_definitions(/GR)
     add_definitions(/EHs)
-    
+
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
       string(REGEX REPLACE "/W[0-4]" "/W4"
         CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -174,7 +175,7 @@ set(PKGCFG_COMPILE_FLAGS "")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libnitf.pc.in
   ${CMAKE_CURRENT_BINARY_DIR}/libnitf.pc @ONLY)
-  
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libnitf.pc
   DESTINATION ${NITRO_PKG_SUBDIR}
   PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
