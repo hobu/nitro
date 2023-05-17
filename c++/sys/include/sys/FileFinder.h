@@ -33,7 +33,7 @@ namespace sys
 /**
  * Predicate interface for all entries
  */
-struct FilePredicate : std::unary_function<std::string, bool>
+struct FilePredicate
 {
     virtual ~FilePredicate() {}
     virtual bool operator()(const std::string& entry) const = 0;
@@ -84,7 +84,7 @@ private:
 
 /**
  * Predicate interface for filtering files with a specific extension
- * This method will not match '.xxx.yyy' type patterns, since the 
+ * This method will not match '.xxx.yyy' type patterns, since the
  * splitting routines will only find '.yyy'.  See re::RegexPredicate
  * for a more useful finder.
  */
@@ -117,7 +117,7 @@ protected:
 
 
 /**
- *  The LogicalPredicate class allows you to chain many 
+ *  The LogicalPredicate class allows you to chain many
  *  predicates using the logical && or ||
  */
 class LogicalPredicate : public FilePredicate
@@ -126,7 +126,7 @@ public:
     LogicalPredicate(bool orOperator = true);
     virtual ~LogicalPredicate();
 
-    sys::LogicalPredicate& addPredicate(FilePredicate* filter, 
+    sys::LogicalPredicate& addPredicate(FilePredicate* filter,
                                         bool ownIt = false);
 
     virtual bool operator()(const std::string& entry) const;
@@ -140,7 +140,7 @@ protected:
 /**
  * \class FileFinder
  *
- *  The FileFinder class allows you to search for 
+ *  The FileFinder class allows you to search for
  *  files/directories in a clean way.
  */
 class FileFinder
@@ -155,7 +155,7 @@ public:
      */
     static std::vector<std::string> search(
         const FilePredicate& filter,
-        const std::vector<std::string>& searchPaths, 
+        const std::vector<std::string>& searchPaths,
         bool recursive = false);
 };
 
